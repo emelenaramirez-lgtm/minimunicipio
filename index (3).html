@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Elecciones Municipio Escolar - Nivel Inicial</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Prevención de selección accidental para niños */
+    body {
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+    .candidate-card:active {
+      transform: scale(0.96);
+    }
+  </style>
+</head>
+<body class="bg-blue-50 min-h-screen flex flex-col justify-between font-sans overflow-hidden">
+
+  <!-- Encabezado Superior -->
+  <header class="bg-indigo-600 text-white p-4 shadow-lg flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <i class="fa-solid fa-check-to-slot text-3xl text-yellow-300"></i>
+      <div>
+        <h1 class="text-xl md:text-2xl font-bold leading-tight">Municipio Escolar</h1>
+        <p class="text-xs md:text-sm text-indigo-200">Elecciones Nivel Inicial</p>
+      </div>
+    </div>
+    
+    <!-- Estado de Red y Control del Adulto -->
+    <div class="flex items-center gap-3">
+      <div id="statusIndicator" class="flex items-center gap-2 bg-indigo-700 px-3 py-1.5 rounded-full text-xs font-semibold">
+        <span id="statusDot" class="w-3 h-3 rounded-full bg-yellow-400 animate-pulse"></span>
+        <span id="statusText">Modo Offline</span>
+      </div>
+      <button onclick="openAdminModal()" class="bg-indigo-800 hover:bg-indigo-900 text-indigo-100 p-2 rounded-lg text-sm transition">
+        <i class="fa-solid fa-user-shield"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Contenido Principal: Pantalla de Votación -->
+  <main class="flex-1 flex flex-col justify-center items-center p-4 max-w-6xl mx-auto w-full">
+    <h2 class="text-2xl md:text-4xl font-extrabold text-indigo-900 mb-6 text-center">
+      ¡Toca el símbolo de tu preferencia para votar!
+    </h2>
+
+    <!-- Opciones de Candidatos (3 Listas) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
+      
+      <!-- Lista 1 -->
+      <button onclick="selectCandidate('Lista 1 - Estrellitas del Futuro', 'logo_lista1.svg', 'bg-red-500')" 
+              class="candidate-card bg-white border-4 border-red-500 rounded-3xl p-6 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
+        <span class="bg-red-500 text-white font-bold text-lg px-4 py-1 rounded-full mb-3">Lista 1</span>
+        <img src="logo_lista1.svg" alt="Logo Lista 1" class="w-40 h-40 object-contain my-2 rounded-2xl">
+        <span class="text-2xl font-bold text-gray-800 text-center mt-2">Estrellitas del Futuro</span>
+      </button>
+
+      <!-- Lista 2 -->
+      <button onclick="selectCandidate('Lista 2 - Soles Radiantes', 'logo_lista2.svg', 'bg-yellow-500')" 
+              class="candidate-card bg-white border-4 border-yellow-500 rounded-3xl p-6 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
+        <span class="bg-yellow-500 text-white font-bold text-lg px-4 py-1 rounded-full mb-3">Lista 2</span>
+        <img src="logo_lista2.svg" alt="Logo Lista 2" class="w-40 h-40 object-contain my-2 rounded-2xl">
+        <span class="text-2xl font-bold text-gray-800 text-center mt-2">Soles Radiantes</span>
+      </button>
+
+      <!-- Lista 3 -->
+      <button onclick="selectCandidate('Lista 3 - Pequeños Gigantes', 'logo_lista3.svg', 'bg-green-500')" 
+              class="candidate-card bg-white border-4 border-green-500 rounded-3xl p-6 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
+        <span class="bg-green-500 text-white font-bold text-lg px-4 py-1 rounded-full mb-3">Lista 3</span>
+        <img src="logo_lista3.svg" alt="Logo Lista 3" class="w-40 h-40 object-contain my-2 rounded-2xl">
+        <span class="text-2xl font-bold text-gray-800 text-center mt-2">Pequeños Gigantes</span>
+      </button>
+
+    </div>
+  </main>
+
+  <!-- Pie de página informativo -->
+  <footer class="p-3 text-center text-xs text-gray-500 bg-gray-100 border-t flex justify-between px-6">
+    <span>Tablet ID: <strong id="tabletIdDisplay">MESA-01</strong></span>
+    <span>Votos locales guardados: <strong id="localCountDisplay" class="text-indigo-600">0</strong></span>
+  </footer>
+
+  <!-- Modal de Confirmación -->
+  <div id="confirmModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
+    <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl border-4 border-indigo-200">
+      <h3 class="text-2xl font-bold text-gray-800 mb-4">¿Estás seguro de tu voto?</h3>
+      
+      <div class="flex flex-col items-center mb-6">
+        <img id="modalCandidateImg" src="" alt="Candidato Seleccionado" class="w-36 h-36 object-contain mb-3 rounded-xl border-2 border-gray-200">
+        <span id="modalCandidateName" class="text-2xl font-extrabold text-indigo-900"></span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <button onclick="closeConfirmModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-4 px-6 rounded-2xl text-xl flex items-center justify-center gap-2">
+          <i class="fa-solid fa-xmark text-red-600"></i> No
+        </button>
+        <button onclick="confirmVote()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-2xl text-xl flex items-center justify-center gap-2 shadow-lg">
+          <i class="fa-solid fa-check"></i> Sí
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Éxito Pantalla Temporal -->
+  <div id="successModal" class="fixed inset-0 bg-green-600 hidden flex justify-center items-center z-50 p-4">
+    <div class="text-center text-white">
+      <i class="fa-solid fa-circle-check text-8xl mb-4 animate-bounce"></i>
+      <h2 class="text-4xl font-extrabold mb-2">¡Muchas Gracias!</h2>
+      <p class="text-2xl">Tu voto ha sido registrado correctamente.</p>
+    </div>
+  </div>
+
+  <!-- Modal de Administración (Supervisores/Docentes) -->
+  <div id="adminModal" class="fixed inset-0 bg-black/80 hidden flex justify-center items-center z-50 p-4">
+    <div class="bg-white rounded-2xl p-6 max-w-lg w-full text-gray-800 shadow-2xl">
+      <div class="flex justify-between items-center mb-4 border-b pb-2">
+        <h3 class="text-xl font-bold text-indigo-900"><i class="fa-solid fa-gear"></i> Panel de Control - Mesa</h3>
+        <button onclick="closeAdminModal()" class="text-gray-500 hover:text-gray-700 text-xl font-bold">&times;</button>
+      </div>
+
+      <!-- Formulario de Autenticación PIN -->
+      <div id="adminAuthSection">
+        <p class="text-sm text-gray-600 mb-3">Ingrese la clave PIN para acceder:</p>
+        <input type="password" id="adminPinInput" class="w-full p-3 border rounded-xl mb-3 text-center text-xl font-bold tracking-widest" placeholder="****">
+        <button onclick="verifyAdminPin()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700">Acceder</button>
+      </div>
+
+      <!-- Opciones del Administrador -->
+      <div id="adminControlsSection" class="hidden space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-600 mb-1">Identificador de Tablet / Mesa:</label>
+          <input type="text" id="tabletIdInput" class="w-full p-2 border rounded-lg text-sm font-semibold" value="MESA-01">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-600 mb-1">URL Google Apps Script (Web App):</label>
+          <input type="text" id="scriptUrlInput" class="w-full p-2 border rounded-lg text-xs" placeholder="https://script.google.com/macros/s/.../exec">
+        </div>
+
+        <div class="bg-gray-100 p-3 rounded-xl text-xs space-y-1">
+          <p><strong>Total acumulado localmente:</strong> <span id="adminTotalLocal">0</span></p>
+          <p><strong>Pendientes de envío:</strong> <span id="adminPending">0</span></p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-2">
+          <button onclick="syncData()" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Forzar Sincronización Ahora
+          </button>
+          <button onclick="exportVotesJSON()" class="bg-gray-700 hover:bg-gray-800 text-white py-2 px-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
+            <i class="fa-solid fa-download"></i> Descargar Respaldo (JSON)
+          </button>
+          <button onclick="clearLocalVotes()" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
+            <i class="fa-solid fa-trash-can"></i> Borrar Memoria Local
+          </button>
+        </div>
+
+        <button onclick="saveAdminSettings()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-xl text-sm">
+          Guardar Configuración
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedCandidateData = null;
+    const DEFAULT_PIN = "1234";
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initSettings();
+      updateStatusUI();
+      updateLocalCounts();
+
+      window.addEventListener('online', updateStatusUI);
+      window.addEventListener('offline', updateStatusUI);
+
+      setInterval(() => {
+        if (navigator.onLine) {
+          syncData(true);
+        }
+      }, 30000);
+    });
+
+    function initSettings() {
+      if (!localStorage.getItem('tabletId')) {
+        localStorage.setItem('tabletId', 'MESA-01');
+      }
+      document.getElementById('tabletIdDisplay').innerText = localStorage.getItem('tabletId');
+      document.getElementById('tabletIdInput').value = localStorage.getItem('tabletId');
+      document.getElementById('scriptUrlInput').value = localStorage.getItem('scriptUrl') || '';
+    }
+
+    function selectCandidate(name, img, colorClass) {
+      selectedCandidateData = { candidate: name, timestamp: new Date().toISOString() };
+      document.getElementById('modalCandidateName').innerText = name;
+      document.getElementById('modalCandidateImg').src = img;
+      document.getElementById('confirmModal').classList.remove('hidden');
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirmModal').classList.add('hidden');
+      selectedCandidateData = null;
+    }
+
+    function confirmVote() {
+      if (!selectedCandidateData) return;
+
+      const votes = JSON.parse(localStorage.getItem('votos_registrados') || '[]');
+      
+      const newVote = {
+        id: 'VOTO-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
+        tabletId: localStorage.getItem('tabletId') || 'MESA-01',
+        timestamp: new Date().toLocaleString('es-PE'),
+        isoTimestamp: new Date().toISOString(),
+        candidate: selectedCandidateData.candidate,
+        synced: false
+      };
+
+      votes.push(newVote);
+      localStorage.setItem('votos_registrados', JSON.stringify(votes));
+
+      closeConfirmModal();
+      showSuccessAndReset();
+      updateLocalCounts();
+
+      if (navigator.onLine) {
+        syncData(true);
+      }
+    }
+
+    function showSuccessAndReset() {
+      const modal = document.getElementById('successModal');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 2500);
+    }
+
+    function updateStatusUI() {
+      const dot = document.getElementById('statusDot');
+      const text = document.getElementById('statusText');
+
+      if (navigator.onLine) {
+        dot.className = "w-3 h-3 rounded-full bg-green-400";
+        text.innerText = "En Línea";
+      } else {
+        dot.className = "w-3 h-3 rounded-full bg-yellow-400 animate-pulse";
+        text.innerText = "Modo Offline (Guardando Local)";
+      }
+    }
+
+    function updateLocalCounts() {
+      const votes = JSON.parse(localStorage.getItem('votos_registrados') || '[]');
+      const pending = votes.filter(v => !v.synced).length;
+      
+      document.getElementById('localCountDisplay').innerText = votes.length;
+      document.getElementById('adminTotalLocal').innerText = votes.length;
+      document.getElementById('adminPending').innerText = pending;
+    }
+
+    async function syncData(silent = false) {
+      const scriptUrl = localStorage.getItem('scriptUrl');
+      if (!scriptUrl) {
+        if (!silent) alert('No se ha configurado la URL de Google Apps Script.');
+        return;
+      }
+
+      const votes = JSON.parse(localStorage.getItem('votos_registrados') || '[]');
+      const pendingVotes = votes.filter(v => !v.synced);
+
+      if (pendingVotes.length === 0) {
+        if (!silent) alert('No hay votos pendientes por enviar.');
+        return;
+      }
+
+      try {
+        await fetch(scriptUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(pendingVotes)
+        });
+
+        votes.forEach(v => v.synced = true);
+        localStorage.setItem('votos_registrados', JSON.stringify(votes));
+        updateLocalCounts();
+
+        if (!silent) alert('¡Sincronización completada con éxito!');
+      } catch (err) {
+        console.error("Error sincronizando:", err);
+        if (!silent) alert('Error al intentar conectar con Google Sheets.');
+      }
+    }
+
+    function openAdminModal() {
+      document.getElementById('adminModal').classList.remove('hidden');
+      document.getElementById('adminAuthSection').classList.remove('hidden');
+      document.getElementById('adminControlsSection').classList.add('hidden');
+      document.getElementById('adminPinInput').value = '';
+    }
+
+    function closeAdminModal() {
+      document.getElementById('adminModal').classList.add('hidden');
+    }
+
+    function verifyAdminPin() {
+      const pin = document.getElementById('adminPinInput').value;
+      if (pin === DEFAULT_PIN) {
+        document.getElementById('adminAuthSection').classList.add('hidden');
+        document.getElementById('adminControlsSection').classList.remove('hidden');
+        updateLocalCounts();
+      } else {
+        alert('PIN incorrecto.');
+      }
+    }
+
+    function saveAdminSettings() {
+      const newTabletId = document.getElementById('tabletIdInput').value;
+      const newScriptUrl = document.getElementById('scriptUrlInput').value;
+
+      localStorage.setItem('tabletId', newTabletId);
+      localStorage.setItem('scriptUrl', newScriptUrl);
+
+      document.getElementById('tabletIdDisplay').innerText = newTabletId;
+      alert('Configuración guardada correctamente.');
+      closeAdminModal();
+    }
+
+    function exportVotesJSON() {
+      const votes = localStorage.getItem('votos_registrados') || '[]';
+      const blob = new Blob([votes], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `votos_${localStorage.getItem('tabletId')}_${Date.now()}.json`;
+      a.click();
+    }
+
+    function clearLocalVotes() {
+      if (confirm('¿ESTÁS SEGURO? Esto borrará permanentemente los votos guardados en esta tablet.')) {
+        localStorage.removeItem('votos_registrados');
+        updateLocalCounts();
+        alert('Memoria local limpiada.');
+      }
+    }
+  </script>
+</body>
+</html>
