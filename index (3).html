@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Elecciones Municipio Escolar - dNivel Inicial</title>
+  <title>Elecciones Municipio Escolar - Nivel Inicial</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome for Icons -->
@@ -20,7 +20,7 @@
     }
   </style>
 </head>
-<body class="bg-blue-50 min-h-screen flex flex-col justify-between font-sans overflow-hidden">
+<body class="bg-blue-50 min-h-screen flex flex-col justify-between font-sans overflow-x-hidden">
 
   <!-- Encabezado Superior -->
   <header class="bg-indigo-600 text-white p-4 shadow-lg flex justify-between items-center">
@@ -45,36 +45,60 @@
   </header>
 
   <!-- Contenido Principal: Pantalla de Votación -->
-  <main class="flex-1 flex flex-col justify-center items-center p-4 max-w-6xl mx-auto w-full">
-    <h2 class="text-2xl md:text-4xl font-extrabold text-indigo-900 mb-6 text-center">
+  <main class="flex-1 flex flex-col justify-center items-center p-4 max-w-7xl mx-auto w-full my-auto">
+    <h2 class="text-2xl md:text-3xl font-extrabold text-indigo-900 mb-4 text-center">
       ¡Toca el símbolo de tu preferencia para votar!
     </h2>
 
-    <!-- Opciones de Candidatos (3 Listas) -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
+    <!-- Opciones de Candidatos (6 Listas) -->
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-6xl">
       
       <!-- Lista 1 -->
-      <button onclick="selectCandidate('Lista 1 - Estrellitas del Futuro', 'logo_lista1.svg', 'bg-red-500')" 
-              class="candidate-card bg-white border-4 border-red-500 rounded-3xl p-6 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
-        <span class="bg-red-500 text-white font-bold text-lg px-4 py-1 rounded-full mb-3">Lista 1</span>
-        <img src="logo_lista1.svg" alt="Logo Lista 1" class="w-40 h-40 object-contain my-2 rounded-2xl">
-        <span class="text-2xl font-bold text-gray-800 text-center mt-2">Estrellitas del Futuro</span>
+      <button onclick="selectCandidate('Lista 1 - Estrellitas del Futuro', 'Code_Generated_Image (2).png')" 
+              class="candidate-card bg-white border-4 border-red-500 rounded-3xl p-4 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
+        <span class="bg-red-500 text-white font-bold text-base md:text-lg px-4 py-1 rounded-full mb-2">Lista 1</span>
+        <img src="logo_lista1.svg" alt="Logo Lista 1" class="w-28 h-28 md:w-36 md:h-36 object-contain my-2 rounded-2xl">
+        <span class="text-lg md:text-xl font-bold text-gray-800 text-center mt-1">Estrellitas del Futuro</span>
       </button>
 
       <!-- Lista 2 -->
-      <button onclick="selectCandidate('Lista 2 - Soles Radiantes', 'logo_lista2.svg', 'bg-yellow-500')" 
-              class="candidate-card bg-white border-4 border-yellow-500 rounded-3xl p-6 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
-        <span class="bg-yellow-500 text-white font-bold text-lg px-4 py-1 rounded-full mb-3">Lista 2</span>
-        <img src="logo_lista2.svg" alt="Logo Lista 2" class="w-40 h-40 object-contain my-2 rounded-2xl">
-        <span class="text-2xl font-bold text-gray-800 text-center mt-2">Soles Radiantes</span>
+      <button onclick="selectCandidate('Lista 2 - Soles Radiantes', 'logo_lista2.svg')" 
+              class="candidate-card bg-white border-4 border-yellow-500 rounded-3xl p-4 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
+        <span class="bg-yellow-500 text-white font-bold text-base md:text-lg px-4 py-1 rounded-full mb-2">Lista 2</span>
+        <img src="logo_lista2.svg" alt="Logo Lista 2" class="w-28 h-28 md:w-36 md:h-36 object-contain my-2 rounded-2xl">
+        <span class="text-lg md:text-xl font-bold text-gray-800 text-center mt-1">Soles Radiantes</span>
       </button>
 
       <!-- Lista 3 -->
-      <button onclick="selectCandidate('Lista 3 - Pequeños Gigantes', 'logo_lista3.svg', 'bg-green-500')" 
-              class="candidate-card bg-white border-4 border-green-500 rounded-3xl p-6 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
-        <span class="bg-green-500 text-white font-bold text-lg px-4 py-1 rounded-full mb-3">Lista 3</span>
-        <img src="logo_lista3.svg" alt="Logo Lista 3" class="w-40 h-40 object-contain my-2 rounded-2xl">
-        <span class="text-2xl font-bold text-gray-800 text-center mt-2">Pequeños Gigantes</span>
+      <button onclick="selectCandidate('Lista 3 - Pequeños Gigantes', 'logo_lista3.svg')" 
+              class="candidate-card bg-white border-4 border-green-500 rounded-3xl p-4 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
+        <span class="bg-green-500 text-white font-bold text-base md:text-lg px-4 py-1 rounded-full mb-2">Lista 3</span>
+        <img src="logo_lista3.svg" alt="Logo Lista 3" class="w-28 h-28 md:w-36 md:h-36 object-contain my-2 rounded-2xl">
+        <span class="text-lg md:text-xl font-bold text-gray-800 text-center mt-1">Pequeños Gigantes</span>
+      </button>
+
+      <!-- Lista 4 -->
+      <button onclick="selectCandidate('Lista 4 - Lunas Brillantes', 'logo_lista4.svg')" 
+              class="candidate-card bg-white border-4 border-purple-500 rounded-3xl p-4 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
+        <span class="bg-purple-500 text-white font-bold text-base md:text-lg px-4 py-1 rounded-full mb-2">Lista 4</span>
+        <img src="logo_lista4.svg" alt="Logo Lista 4" class="w-28 h-28 md:w-36 md:h-36 object-contain my-2 rounded-2xl">
+        <span class="text-lg md:text-xl font-bold text-gray-800 text-center mt-1">Lunas Brillantes</span>
+      </button>
+
+      <!-- Lista 5 -->
+      <button onclick="selectCandidate('Lista 5 - Flores Alegres', 'logo_lista5.svg')" 
+              class="candidate-card bg-white border-4 border-pink-500 rounded-3xl p-4 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
+        <span class="bg-pink-500 text-white font-bold text-base md:text-lg px-4 py-1 rounded-full mb-2">Lista 5</span>
+        <img src="logo_lista5.svg" alt="Logo Lista 5" class="w-28 h-28 md:w-36 md:h-36 object-contain my-2 rounded-2xl">
+        <span class="text-lg md:text-xl font-bold text-gray-800 text-center mt-1">Flores Alegres</span>
+      </button>
+
+      <!-- Lista 6 -->
+      <button onclick="selectCandidate('Lista 6 - Arcoíris Mágico', 'logo_lista6.svg')" 
+              class="candidate-card bg-white border-4 border-cyan-500 rounded-3xl p-4 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
+        <span class="bg-cyan-500 text-white font-bold text-base md:text-lg px-4 py-1 rounded-full mb-2">Lista 6</span>
+        <img src="logo_lista6.svg" alt="Logo Lista 6" class="w-28 h-28 md:w-36 md:h-36 object-contain my-2 rounded-2xl">
+        <span class="text-lg md:text-xl font-bold text-gray-800 text-center mt-1">Arcoíris Mágico</span>
       </button>
 
     </div>
@@ -195,7 +219,7 @@
       document.getElementById('scriptUrlInput').value = localStorage.getItem('scriptUrl') || '';
     }
 
-    function selectCandidate(name, img, colorClass) {
+    function selectCandidate(name, img) {
       selectedCandidateData = { candidate: name, timestamp: new Date().toISOString() };
       document.getElementById('modalCandidateName').innerText = name;
       document.getElementById('modalCandidateImg').src = img;
