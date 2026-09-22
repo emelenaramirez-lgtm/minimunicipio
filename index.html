@@ -1,376 +1,627 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Elecciones Municipio Escolar - Nivel Inicial</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome for Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    /* Prevención de selección accidental para niños */
-    body {
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: manipulation;
-    }
-    .candidate-card:active {
-      transform: scale(0.96);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Elecciones Municipio Escolar - Nivel Inicial</title>
+<style>
+/* ================= BASE ================= */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  background-color: #eff6ff;
+  min-height: 100vh;
+  display: -webkit-flex; display: flex;
+  -webkit-flex-direction: column; flex-direction: column;
+  -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  touch-action: manipulation;
+  overflow-x: hidden;
+}
+.hidden { display: none !important; }
+
+/* ================= HEADER ================= */
+.header {
+  background-color: #4f46e5; color: #ffffff;
+  padding: 12px 16px;
+  display: -webkit-flex; display: flex;
+  -webkit-align-items: center; align-items: center;
+  -webkit-justify-content: space-between; justify-content: space-between;
+  -webkit-flex-wrap: wrap; flex-wrap: wrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+}
+.header-left { display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; }
+.header-icon { font-size: 30px; line-height: 1; margin-right: 10px; }
+.header h1 { font-size: 20px; margin: 0; font-weight: bold; line-height: 1.2; }
+.header p { font-size: 12px; margin: 2px 0 0 0; color: #c7d2fe; }
+.header-right { display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; }
+.status {
+  display: -webkit-flex; display: flex;
+  -webkit-align-items: center; align-items: center;
+  background-color: #4338ca; padding: 6px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: bold; white-space: nowrap;
+}
+.status-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background-color: #facc15; margin-right: 8px;
+  -webkit-animation: pulse 1.4s infinite; animation: pulse 1.4s infinite;
+}
+.status-dot.online { background-color: #4ade80; -webkit-animation: none; animation: none; }
+@-webkit-keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+.btn-admin {
+  margin-left: 10px; background-color: #3730a3; color: #e0e7ff;
+  border: none; border-radius: 10px; padding: 8px 11px;
+  font-size: 16px; line-height: 1; cursor: pointer;
+  -webkit-appearance: none; appearance: none;
+}
+.btn-admin:hover { background-color: #312e81; }
+
+/* ================= MAIN ================= */
+.main {
+  -webkit-flex: 1; flex: 1;
+  display: -webkit-flex; display: flex;
+  -webkit-flex-direction: column; flex-direction: column;
+  -webkit-align-items: center; align-items: center;
+  -webkit-justify-content: center; justify-content: center;
+  padding: 16px; width: 100%; max-width: 1200px; margin: 0 auto;
+}
+.title {
+  font-size: 22px; font-weight: bold; color: #1e1b4b;
+  text-align: center; margin: 6px 0 18px 0;
+}
+.candidates {
+  display: -webkit-flex; display: flex;
+  -webkit-flex-wrap: wrap; flex-wrap: wrap;
+  margin: 0 -6px; width: 100%; max-width: 1100px;
+}
+.card-cell { width: 50%; padding: 6px; }
+
+.candidate-card {
+  width: 100%; height: 100%;
+  display: -webkit-flex; display: flex;
+  -webkit-flex-direction: column; flex-direction: column;
+  -webkit-align-items: center; align-items: center;
+  -webkit-justify-content: space-between; justify-content: space-between;
+  background-color: #ffffff;
+  border: 4px solid #cbd5e1;
+  border-radius: 24px;
+  padding: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+  -webkit-transition: -webkit-transform .12s ease;
+  transition: transform .12s ease;
+  -webkit-appearance: none; appearance: none;
+}
+.candidate-card:active { -webkit-transform: scale(.96); transform: scale(.96); }
+
+.card-badge {
+  display: inline-block; color: #ffffff; font-weight: bold; font-size: 15px;
+  padding: 4px 16px; border-radius: 999px; margin-bottom: 8px;
+}
+.card-logo {
+  width: 110px; height: 110px; border-radius: 16px; background-color: #f3f4f6;
+  display: -webkit-flex; display: flex;
+  -webkit-align-items: center; align-items: center;
+  -webkit-justify-content: center; justify-content: center;
+  overflow: hidden; margin: 6px 0;
+}
+.card-logo img { max-width: 100%; max-height: 100%; display: block; }
+.card-name { font-size: 16px; font-weight: bold; color: #1f2937; text-align: center; margin-top: 6px; }
+
+/* Colores por lista */
+.c1 { border-color: #ef4444; } .c1 .card-badge { background-color: #ef4444; }
+.c2 { border-color: #eab308; } .c2 .card-badge { background-color: #eab308; }
+.c3 { border-color: #22c55e; } .c3 .card-badge { background-color: #22c55e; }
+.c4 { border-color: #a855f7; } .c4 .card-badge { background-color: #a855f7; }
+.c5 { border-color: #ec4899; } .c5 .card-badge { background-color: #ec4899; }
+.c6 { border-color: #06b6d4; } .c6 .card-badge { background-color: #06b6d4; }
+
+/* ================= FOOTER ================= */
+.footer {
+  padding: 10px 20px; font-size: 12px; color: #6b7280;
+  background-color: #f3f4f6; border-top: 1px solid #e5e7eb;
+  display: -webkit-flex; display: flex;
+  -webkit-justify-content: space-between; justify-content: space-between;
+  -webkit-flex-wrap: wrap; flex-wrap: wrap;
+}
+.footer strong { color: #4f46e5; }
+
+/* ================= MODALES ================= */
+.modal {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  display: none; padding: 16px; z-index: 50;
+  -webkit-align-items: center; align-items: center;
+  -webkit-justify-content: center; justify-content: center;
+}
+.modal.show { display: -webkit-flex; display: flex; }
+#confirmModal { background-color: rgba(0,0,0,0.72); }
+#adminModal   { background-color: rgba(0,0,0,0.82); }
+#successModal { background-color: #16a34a; color: #ffffff; }
+
+.dialog {
+  background-color: #ffffff; border-radius: 24px; padding: 26px;
+  width: 100%; max-width: 430px; text-align: center;
+  border: 4px solid #c7d2fe;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+  color: #1f2937;
+}
+.dialog h3 { font-size: 22px; margin: 0 0 16px 0; color: #1f2937; }
+.modal-logo {
+  width: 130px; height: 130px; border-radius: 14px; border: 2px solid #e5e7eb;
+  background-color: #f9fafb; margin: 0 auto 12px auto; overflow: hidden;
+  display: -webkit-flex; display: flex;
+  -webkit-align-items: center; align-items: center;
+  -webkit-justify-content: center; justify-content: center;
+}
+.modal-logo img { max-width: 100%; max-height: 100%; display: block; }
+.modal-candidate-name {
+  display: block; font-size: 20px; font-weight: bold;
+  color: #312e81; margin-bottom: 18px;
+}
+.btn-row { display: -webkit-flex; display: flex; margin: 0 -8px; }
+.btn-row > button {
+  -webkit-flex: 1; flex: 1; margin: 0 8px;
+  border: none; border-radius: 18px; padding: 16px 10px;
+  font-size: 19px; font-weight: bold; cursor: pointer; font-family: inherit;
+  -webkit-appearance: none; appearance: none;
+}
+.btn-no { background-color: #d1d5db; color: #1f2937; }
+.btn-no:hover { background-color: #9ca3af; }
+.btn-si { background-color: #22c55e; color: #ffffff; box-shadow: 0 6px 14px rgba(34,197,94,.4); }
+.btn-si:hover { background-color: #16a34a; }
+
+/* Éxito */
+.success-box { text-align: center; padding: 20px; }
+.success-icon {
+  font-size: 90px; line-height: 1; display: block; margin-bottom: 12px;
+  -webkit-animation: bounce 1s infinite; animation: bounce 1s infinite;
+}
+@-webkit-keyframes bounce { 0%,100% { -webkit-transform: translateY(0); } 50% { -webkit-transform: translateY(-14px); } }
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+.success-box h2 { font-size: 34px; margin: 0 0 8px 0; }
+.success-box p { font-size: 20px; margin: 0; }
+
+/* Admin */
+.admin-dialog {
+  background-color: #ffffff; border-radius: 18px; padding: 22px;
+  width: 100%; max-width: 520px; color: #1f2937;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.4);
+}
+.admin-head {
+  display: -webkit-flex; display: flex;
+  -webkit-justify-content: space-between; justify-content: space-between;
+  -webkit-align-items: center; align-items: center;
+  border-bottom: 1px solid #e5e7eb; padding-bottom: 10px; margin-bottom: 14px;
+}
+.admin-head h3 { margin: 0; font-size: 18px; color: #312e81; }
+.btn-close {
+  background: none; border: none; font-size: 26px; line-height: 1;
+  color: #6b7280; cursor: pointer; padding: 0 4px;
+}
+.field { margin-bottom: 12px; }
+.field label { display: block; font-size: 12px; font-weight: bold; color: #4b5563; margin-bottom: 4px; }
+.field input {
+  width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 10px;
+  font-size: 14px; font-family: inherit;
+}
+.field input.pin { text-align: center; font-size: 22px; font-weight: bold; letter-spacing: 8px; }
+.info-box {
+  background-color: #f3f4f6; border-radius: 12px;
+  padding: 10px 12px; font-size: 13px; margin-bottom: 12px;
+}
+.info-box p { margin: 4px 0; }
+.actions button {
+  width: 100%; border: none; border-radius: 12px; padding: 12px;
+  font-size: 14px; font-weight: bold; color: #ffffff;
+  cursor: pointer; margin-bottom: 8px; font-family: inherit;
+  -webkit-appearance: none; appearance: none;
+}
+.btn-primary { background-color: #4f46e5; } .btn-primary:hover { background-color: #4338ca; }
+.btn-blue    { background-color: #2563eb; } .btn-blue:hover    { background-color: #1d4ed8; }
+.btn-gray    { background-color: #374151; } .btn-gray:hover    { background-color: #1f2937; }
+.btn-red     { background-color: #dc2626; } .btn-red:hover     { background-color: #b91c1c; }
+.btn-green   { background-color: #16a34a; } .btn-green:hover   { background-color: #15803d; }
+
+/* ================= TABLET / DESKTOP ================= */
+@media (min-width: 768px) {
+  .title { font-size: 28px; }
+  .card-cell { width: 33.3333%; padding: 10px; }
+  .card-logo { width: 144px; height: 144px; }
+  .card-name { font-size: 18px; }
+  .card-badge { font-size: 16px; }
+  .header h1 { font-size: 24px; }
+  .header p { font-size: 14px; }
+}
+</style>
 </head>
-<body class="bg-blue-50 min-h-screen flex flex-col justify-between font-sans overflow-x-hidden">
+<body>
 
-  <!-- Encabezado Superior -->
-  <header class="bg-indigo-600 text-white p-4 shadow-lg flex justify-between items-center">
-    <div class="flex items-center gap-3">
-      <i class="fa-solid fa-check-to-slot text-3xl text-yellow-300"></i>
-      <div>
-        <h1 class="text-xl md:text-2xl font-bold leading-tight">Municipio Escolar</h1>
-        <p class="text-xs md:text-sm text-indigo-200">Elecciones Nivel Inicial</p>
-      </div>
+<!-- ================= ENCABEZADO ================= -->
+<header class="header">
+  <div class="header-left">
+    <span class="header-icon">🗳️</span>
+    <div>
+      <h1>Municipio Escolar</h1>
+      <p>Elecciones Nivel Inicial</p>
     </div>
-    
-    <!-- Estado de Red y Control del Adulto -->
-    <div class="flex items-center gap-3">
-      <div id="statusIndicator" class="flex items-center gap-2 bg-indigo-700 px-3 py-1.5 rounded-full text-xs font-semibold">
-        <span id="statusDot" class="w-3 h-3 rounded-full bg-yellow-400 animate-pulse"></span>
-        <span id="statusText">Modo Offline</span>
-      </div>
-      <button onclick="openAdminModal()" class="bg-indigo-800 hover:bg-indigo-900 text-indigo-100 p-2 rounded-lg text-sm transition">
-        <i class="fa-solid fa-user-shield"></i>
+  </div>
+  <div class="header-right">
+    <div class="status">
+      <span id="statusDot" class="status-dot"></span>
+      <span id="statusText">Modo Offline</span>
+    </div>
+    <button type="button" class="btn-admin" onclick="openAdminModal()" title="Panel de control">⚙️</button>
+  </div>
+</header>
+
+<!-- ================= PANTALLA DE VOTACIÓN ================= -->
+<main class="main">
+  <h2 class="title">¡Toca el símbolo de tu preferencia para votar!</h2>
+
+  <div class="candidates">
+
+    <!-- Lista 1 -->
+    <div class="card-cell">
+      <button type="button" class="candidate-card c1"
+              onclick="selectCandidate('Lista 1 - Estrellitas del Futuro','logo_lista1.svg')">
+        <span class="card-badge">Lista 1</span>
+        <span class="card-logo"><img src="logo_lista1.svg" alt="Logo Lista 1" onerror="this.style.display='none'"></span>
+        <span class="card-name">Estrellitas del Futuro</span>
       </button>
     </div>
-  </header>
 
-  <!-- Contenido Principal: Pantalla de Votación -->
-  <main class="flex-1 flex flex-col justify-center items-center p-4 max-w-7xl mx-auto w-full my-auto">
-    <h2 class="text-2xl md:text-3xl font-extrabold text-indigo-900 mb-4 text-center">
-      ¡Toca el símbolo de tu preferencia para votar!
-    </h2>
-
-    <!-- Opciones de Candidatos (6 Listas) -->
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-6xl">
-      
-      <!-- Lista 1 -->
-      <button onclick="selectCandidate('Lista 1 - Estrellitas del Futuro', 'Code_Generated_Image (2).png')" 
-              class="candidate-card bg-white border-4 border-red-500 rounded-3xl p-4 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
-        <span class="bg-red-500 text-white font-bold text-base md:text-lg px-4 py-1 rounded-full mb-2">Lista 1</span>
-        <img src="logo_lista1.svg" alt="Logo Lista 1" class="w-28 h-28 md:w-36 md:h-36 object-contain my-2 rounded-2xl">
-        <span class="text-lg md:text-xl font-bold text-gray-800 text-center mt-1">Estrellitas del Futuro</span>
+    <!-- Lista 2 -->
+    <div class="card-cell">
+      <button type="button" class="candidate-card c2"
+              onclick="selectCandidate('Lista 2 - Soles Radiantes','logo_lista2.svg')">
+        <span class="card-badge">Lista 2</span>
+        <span class="card-logo"><img src="logo_lista2.svg" alt="Logo Lista 2" onerror="this.style.display='none'"></span>
+        <span class="card-name">Soles Radiantes</span>
       </button>
-
-      <!-- Lista 2 -->
-      <button onclick="selectCandidate('Lista 2 - Soles Radiantes', 'logo_lista2.svg')" 
-              class="candidate-card bg-white border-4 border-yellow-500 rounded-3xl p-4 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
-        <span class="bg-yellow-500 text-white font-bold text-base md:text-lg px-4 py-1 rounded-full mb-2">Lista 2</span>
-        <img src="logo_lista2.svg" alt="Logo Lista 2" class="w-28 h-28 md:w-36 md:h-36 object-contain my-2 rounded-2xl">
-        <span class="text-lg md:text-xl font-bold text-gray-800 text-center mt-1">Soles Radiantes</span>
-      </button>
-
-      <!-- Lista 3 -->
-      <button onclick="selectCandidate('Lista 3 - Pequeños Gigantes', 'logo_lista3.svg')" 
-              class="candidate-card bg-white border-4 border-green-500 rounded-3xl p-4 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
-        <span class="bg-green-500 text-white font-bold text-base md:text-lg px-4 py-1 rounded-full mb-2">Lista 3</span>
-        <img src="logo_lista3.svg" alt="Logo Lista 3" class="w-28 h-28 md:w-36 md:h-36 object-contain my-2 rounded-2xl">
-        <span class="text-lg md:text-xl font-bold text-gray-800 text-center mt-1">Pequeños Gigantes</span>
-      </button>
-
-      <!-- Lista 4 -->
-      <button onclick="selectCandidate('Lista 4 - Lunas Brillantes', 'logo_lista4.svg')" 
-              class="candidate-card bg-white border-4 border-purple-500 rounded-3xl p-4 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
-        <span class="bg-purple-500 text-white font-bold text-base md:text-lg px-4 py-1 rounded-full mb-2">Lista 4</span>
-        <img src="logo_lista4.svg" alt="Logo Lista 4" class="w-28 h-28 md:w-36 md:h-36 object-contain my-2 rounded-2xl">
-        <span class="text-lg md:text-xl font-bold text-gray-800 text-center mt-1">Lunas Brillantes</span>
-      </button>
-
-      <!-- Lista 5 -->
-      <button onclick="selectCandidate('Lista 5 - Flores Alegres', 'logo_lista5.svg')" 
-              class="candidate-card bg-white border-4 border-pink-500 rounded-3xl p-4 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
-        <span class="bg-pink-500 text-white font-bold text-base md:text-lg px-4 py-1 rounded-full mb-2">Lista 5</span>
-        <img src="logo_lista5.svg" alt="Logo Lista 5" class="w-28 h-28 md:w-36 md:h-36 object-contain my-2 rounded-2xl">
-        <span class="text-lg md:text-xl font-bold text-gray-800 text-center mt-1">Flores Alegres</span>
-      </button>
-
-      <!-- Lista 6 -->
-      <button onclick="selectCandidate('Lista 6 - Arcoíris Mágico', 'logo_lista6.svg')" 
-              class="candidate-card bg-white border-4 border-cyan-500 rounded-3xl p-4 shadow-xl hover:shadow-2xl flex flex-col items-center justify-between transition-all">
-        <span class="bg-cyan-500 text-white font-bold text-base md:text-lg px-4 py-1 rounded-full mb-2">Lista 6</span>
-        <img src="logo_lista6.svg" alt="Logo Lista 6" class="w-28 h-28 md:w-36 md:h-36 object-contain my-2 rounded-2xl">
-        <span class="text-lg md:text-xl font-bold text-gray-800 text-center mt-1">Arcoíris Mágico</span>
-      </button>
-
     </div>
-  </main>
 
-  <!-- Pie de página informativo -->
-  <footer class="p-3 text-center text-xs text-gray-500 bg-gray-100 border-t flex justify-between px-6">
-    <span>Tablet ID: <strong id="tabletIdDisplay">MESA-01</strong></span>
-    <span>Votos locales guardados: <strong id="localCountDisplay" class="text-indigo-600">0</strong></span>
-  </footer>
+    <!-- Lista 3 -->
+    <div class="card-cell">
+      <button type="button" class="candidate-card c3"
+              onclick="selectCandidate('Lista 3 - Pequeños Gigantes','logo_lista3.svg')">
+        <span class="card-badge">Lista 3</span>
+        <span class="card-logo"><img src="logo_lista3.svg" alt="Logo Lista 3" onerror="this.style.display='none'"></span>
+        <span class="card-name">Pequeños Gigantes</span>
+      </button>
+    </div>
 
-  <!-- Modal de Confirmación -->
-  <div id="confirmModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden flex justify-center items-center z-50 p-4">
-    <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl border-4 border-indigo-200">
-      <h3 class="text-2xl font-bold text-gray-800 mb-4">¿Estás seguro de tu voto?</h3>
-      
-      <div class="flex flex-col items-center mb-6">
-        <img id="modalCandidateImg" src="" alt="Candidato Seleccionado" class="w-36 h-36 object-contain mb-3 rounded-xl border-2 border-gray-200">
-        <span id="modalCandidateName" class="text-2xl font-extrabold text-indigo-900"></span>
+    <!-- Lista 4 -->
+    <div class="card-cell">
+      <button type="button" class="candidate-card c4"
+              onclick="selectCandidate('Lista 4 - Lunas Brillantes','logo_lista4.svg')">
+        <span class="card-badge">Lista 4</span>
+        <span class="card-logo"><img src="logo_lista4.svg" alt="Logo Lista 4" onerror="this.style.display='none'"></span>
+        <span class="card-name">Lunas Brillantes</span>
+      </button>
+    </div>
+
+    <!-- Lista 5 -->
+    <div class="card-cell">
+      <button type="button" class="candidate-card c5"
+              onclick="selectCandidate('Lista 5 - Flores Alegres','logo_lista5.svg')">
+        <span class="card-badge">Lista 5</span>
+        <span class="card-logo"><img src="logo_lista5.svg" alt="Logo Lista 5" onerror="this.style.display='none'"></span>
+        <span class="card-name">Flores Alegres</span>
+      </button>
+    </div>
+
+    <!-- Lista 6 -->
+    <div class="card-cell">
+      <button type="button" class="candidate-card c6"
+              onclick="selectCandidate('Lista 6 - Arcoíris Mágico','logo_lista6.svg')">
+        <span class="card-badge">Lista 6</span>
+        <span class="card-logo"><img src="logo_lista6.svg" alt="Logo Lista 6" onerror="this.style.display='none'"></span>
+        <span class="card-name">Arcoíris Mágico</span>
+      </button>
+    </div>
+
+  </div>
+</main>
+
+<!-- ================= PIE ================= -->
+<footer class="footer">
+  <span>Tablet ID: <strong id="tabletIdDisplay">MESA-01</strong></span>
+  <span>Votos locales guardados: <strong id="localCountDisplay">0</strong></span>
+</footer>
+
+<!-- ================= MODAL CONFIRMACIÓN ================= -->
+<div id="confirmModal" class="modal">
+  <div class="dialog">
+    <h3>¿Estás seguro de tu voto?</h3>
+    <div class="modal-logo">
+      <img id="modalCandidateImg" src="" alt="Candidato seleccionado" onerror="this.style.display='none'">
+    </div>
+    <span id="modalCandidateName" class="modal-candidate-name"></span>
+    <div class="btn-row">
+      <button type="button" class="btn-no" onclick="closeConfirmModal()">✖ No</button>
+      <button type="button" class="btn-si" onclick="confirmVote()">✔ Sí</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL ÉXITO ================= -->
+<div id="successModal" class="modal">
+  <div class="success-box">
+    <span class="success-icon">✅</span>
+    <h2>¡Muchas Gracias!</h2>
+    <p>Tu voto ha sido registrado correctamente.</p>
+  </div>
+</div>
+
+<!-- ================= MODAL ADMINISTRACIÓN ================= -->
+<div id="adminModal" class="modal">
+  <div class="admin-dialog">
+    <div class="admin-head">
+      <h3>⚙️ Panel de Control - Mesa</h3>
+      <button type="button" class="btn-close" onclick="closeAdminModal()">&times;</button>
+    </div>
+
+    <!-- Autenticación -->
+    <div id="adminAuthSection">
+      <p style="font-size:13px;color:#4b5563;margin:0 0 10px 0;">Ingrese la clave PIN para acceder:</p>
+      <div class="field">
+        <input type="password" id="adminPinInput" class="pin" placeholder="****">
+      </div>
+      <button type="button" class="btn-primary" style="width:100%;border:none;border-radius:12px;padding:12px;font-size:15px;font-weight:bold;color:#fff;cursor:pointer;" onclick="verifyAdminPin()">Acceder</button>
+    </div>
+
+    <!-- Controles -->
+    <div id="adminControlsSection" class="hidden">
+      <div class="field">
+        <label>Identificador de Tablet / Mesa:</label>
+        <input type="text" id="tabletIdInput" value="MESA-01">
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
-        <button onclick="closeConfirmModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-4 px-6 rounded-2xl text-xl flex items-center justify-center gap-2">
-          <i class="fa-solid fa-xmark text-red-600"></i> No
-        </button>
-        <button onclick="confirmVote()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-2xl text-xl flex items-center justify-center gap-2 shadow-lg">
-          <i class="fa-solid fa-check"></i> Sí
-        </button>
+      <div class="field">
+        <label>URL Google Apps Script (Web App):</label>
+        <input type="text" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/.../exec">
+      </div>
+
+      <div class="info-box">
+        <p><strong>Total acumulado localmente:</strong> <span id="adminTotalLocal">0</span></p>
+        <p><strong>Pendientes de envío:</strong> <span id="adminPending">0</span></p>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn-blue" onclick="syncData(false)">☁️ Forzar Sincronización Ahora</button>
+        <button type="button" class="btn-gray" onclick="exportVotesJSON()">⬇️ Descargar Respaldo (JSON)</button>
+        <button type="button" class="btn-red" onclick="clearLocalVotes()">🗑️ Borrar Memoria Local</button>
+        <button type="button" class="btn-green" onclick="saveAdminSettings()">Guardar Configuración</button>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Modal Éxito Pantalla Temporal -->
-  <div id="successModal" class="fixed inset-0 bg-green-600 hidden flex justify-center items-center z-50 p-4">
-    <div class="text-center text-white">
-      <i class="fa-solid fa-circle-check text-8xl mb-4 animate-bounce"></i>
-      <h2 class="text-4xl font-extrabold mb-2">¡Muchas Gracias!</h2>
-      <p class="text-2xl">Tu voto ha sido registrado correctamente.</p>
-    </div>
-  </div>
+<script>
+/* =========================================================
+   CONFIGURACIÓN GENERAL
+   ========================================================= */
+var DEFAULT_PIN = "1234";
+var selectedCandidateData = null;
 
-  <!-- Modal de Administración (Supervisores/Docentes) -->
-  <div id="adminModal" class="fixed inset-0 bg-black/80 hidden flex justify-center items-center z-50 p-4">
-    <div class="bg-white rounded-2xl p-6 max-w-lg w-full text-gray-800 shadow-2xl">
-      <div class="flex justify-between items-center mb-4 border-b pb-2">
-        <h3 class="text-xl font-bold text-indigo-900"><i class="fa-solid fa-gear"></i> Panel de Control - Mesa</h3>
-        <button onclick="closeAdminModal()" class="text-gray-500 hover:text-gray-700 text-xl font-bold">&times;</button>
-      </div>
+/* ---------- Almacenamiento seguro (modo incógnito puede fallar) ---------- */
+function lsGet(key) {
+  try { return localStorage.getItem(key); } catch (e) { return null; }
+}
+function lsSet(key, value) {
+  try { localStorage.setItem(key, value); return true; } catch (e) { return false; }
+}
+function lsRemove(key) {
+  try { localStorage.removeItem(key); } catch (e) {}
+}
 
-      <!-- Formulario de Autenticación PIN -->
-      <div id="adminAuthSection">
-        <p class="text-sm text-gray-600 mb-3">Ingrese la clave PIN para acceder:</p>
-        <input type="password" id="adminPinInput" class="w-full p-3 border rounded-xl mb-3 text-center text-xl font-bold tracking-widest" placeholder="****">
-        <button onclick="verifyAdminPin()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700">Acceder</button>
-      </div>
+/* ---------- Arranque ---------- */
+document.addEventListener('DOMContentLoaded', function () {
+  initSettings();
+  updateStatusUI();
+  updateLocalCounts();
 
-      <!-- Opciones del Administrador -->
-      <div id="adminControlsSection" class="hidden space-y-4">
-        <div>
-          <label class="block text-xs font-bold text-gray-600 mb-1">Identificador de Tablet / Mesa:</label>
-          <input type="text" id="tabletIdInput" class="w-full p-2 border rounded-lg text-sm font-semibold" value="MESA-01">
-        </div>
+  window.addEventListener('online', updateStatusUI);
+  window.addEventListener('offline', updateStatusUI);
 
-        <div>
-          <label class="block text-xs font-bold text-gray-600 mb-1">URL Google Apps Script (Web App):</label>
-          <input type="text" id="scriptUrlInput" class="w-full p-2 border rounded-lg text-xs" placeholder="https://script.google.com/macros/s/.../exec">
-        </div>
+  setInterval(function () {
+    if (navigator.onLine) { syncData(true); }
+  }, 30000);
+});
 
-        <div class="bg-gray-100 p-3 rounded-xl text-xs space-y-1">
-          <p><strong>Total acumulado localmente:</strong> <span id="adminTotalLocal">0</span></p>
-          <p><strong>Pendientes de envío:</strong> <span id="adminPending">0</span></p>
-        </div>
+function initSettings() {
+  if (!lsGet('tabletId')) { lsSet('tabletId', 'MESA-01'); }
+  document.getElementById('tabletIdDisplay').innerHTML = lsGet('tabletId') || 'MESA-01';
+  document.getElementById('tabletIdInput').value = lsGet('tabletId') || 'MESA-01';
+  document.getElementById('scriptUrlInput').value = lsGet('scriptUrl') || '';
+}
 
-        <div class="grid grid-cols-1 gap-2">
-          <button onclick="syncData()" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
-            <i class="fa-solid fa-cloud-arrow-up"></i> Forzar Sincronización Ahora
-          </button>
-          <button onclick="exportVotesJSON()" class="bg-gray-700 hover:bg-gray-800 text-white py-2 px-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
-            <i class="fa-solid fa-download"></i> Descargar Respaldo (JSON)
-          </button>
-          <button onclick="clearLocalVotes()" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
-            <i class="fa-solid fa-trash-can"></i> Borrar Memoria Local
-          </button>
-        </div>
+/* =========================================================
+   VOTACIÓN
+   ========================================================= */
+function selectCandidate(name, img) {
+  selectedCandidateData = { candidate: name, img: img };
+  document.getElementById('modalCandidateName').innerHTML = name;
 
-        <button onclick="saveAdminSettings()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-xl text-sm">
-          Guardar Configuración
-        </button>
-      </div>
-    </div>
-  </div>
+  var imgEl = document.getElementById('modalCandidateImg');
+  imgEl.style.display = 'block';
+  imgEl.src = img;
 
-  <script>
-    let selectedCandidateData = null;
-    const DEFAULT_PIN = "1234";
+  document.getElementById('confirmModal').classList.add('show');
+}
 
-    document.addEventListener('DOMContentLoaded', () => {
-      initSettings();
-      updateStatusUI();
-      updateLocalCounts();
+function closeConfirmModal() {
+  document.getElementById('confirmModal').classList.remove('show');
+  selectedCandidateData = null;
+}
 
-      window.addEventListener('online', updateStatusUI);
-      window.addEventListener('offline', updateStatusUI);
+function confirmVote() {
+  if (!selectedCandidateData) { return; }
 
-      setInterval(() => {
-        if (navigator.onLine) {
-          syncData(true);
-        }
-      }, 30000);
-    });
+  var votes = JSON.parse(lsGet('votos_registrados') || '[]');
 
-    function initSettings() {
-      if (!localStorage.getItem('tabletId')) {
-        localStorage.setItem('tabletId', 'MESA-01');
-      }
-      document.getElementById('tabletIdDisplay').innerText = localStorage.getItem('tabletId');
-      document.getElementById('tabletIdInput').value = localStorage.getItem('tabletId');
-      document.getElementById('scriptUrlInput').value = localStorage.getItem('scriptUrl') || '';
-    }
+  var newVote = {
+    id: 'VOTO-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6),
+    tabletId: lsGet('tabletId') || 'MESA-01',
+    timestamp: new Date().toLocaleString('es-PE'),
+    isoTimestamp: new Date().toISOString(),
+    candidate: selectedCandidateData.candidate,
+    synced: false
+  };
 
-    function selectCandidate(name, img) {
-      selectedCandidateData = { candidate: name, timestamp: new Date().toISOString() };
-      document.getElementById('modalCandidateName').innerText = name;
-      document.getElementById('modalCandidateImg').src = img;
-      document.getElementById('confirmModal').classList.remove('hidden');
-    }
+  votes.push(newVote);
+  lsSet('votos_registrados', JSON.stringify(votes));
 
-    function closeConfirmModal() {
-      document.getElementById('confirmModal').classList.add('hidden');
-      selectedCandidateData = null;
-    }
+  closeConfirmModal();
+  showSuccessAndReset();
+  updateLocalCounts();
 
-    function confirmVote() {
-      if (!selectedCandidateData) return;
+  if (navigator.onLine) { syncData(true); }
+}
 
-      const votes = JSON.parse(localStorage.getItem('votos_registrados') || '[]');
-      
-      const newVote = {
-        id: 'VOTO-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
-        tabletId: localStorage.getItem('tabletId') || 'MESA-01',
-        timestamp: new Date().toLocaleString('es-PE'),
-        isoTimestamp: new Date().toISOString(),
-        candidate: selectedCandidateData.candidate,
-        synced: false
-      };
+function showSuccessAndReset() {
+  var modal = document.getElementById('successModal');
+  modal.classList.add('show');
+  setTimeout(function () {
+    modal.classList.remove('show');
+  }, 2500);
+}
 
-      votes.push(newVote);
-      localStorage.setItem('votos_registrados', JSON.stringify(votes));
+/* =========================================================
+   ESTADO DE RED Y CONTADORES
+   ========================================================= */
+function updateStatusUI() {
+  var dot = document.getElementById('statusDot');
+  var text = document.getElementById('statusText');
 
-      closeConfirmModal();
-      showSuccessAndReset();
-      updateLocalCounts();
+  if (navigator.onLine) {
+    dot.className = 'status-dot online';
+    text.innerHTML = 'En Línea';
+  } else {
+    dot.className = 'status-dot';
+    text.innerHTML = 'Modo Offline (Guardando Local)';
+  }
+}
 
-      if (navigator.onLine) {
-        syncData(true);
-      }
-    }
+function updateLocalCounts() {
+  var votes = JSON.parse(lsGet('votos_registrados') || '[]');
+  var pending = 0;
+  for (var i = 0; i < votes.length; i++) {
+    if (!votes[i].synced) { pending++; }
+  }
 
-    function showSuccessAndReset() {
-      const modal = document.getElementById('successModal');
-      modal.classList.remove('hidden');
-      setTimeout(() => {
-        modal.classList.add('hidden');
-      }, 2500);
-    }
+  document.getElementById('localCountDisplay').innerHTML = votes.length;
+  document.getElementById('adminTotalLocal').innerHTML = votes.length;
+  document.getElementById('adminPending').innerHTML = pending;
+}
 
-    function updateStatusUI() {
-      const dot = document.getElementById('statusDot');
-      const text = document.getElementById('statusText');
+/* =========================================================
+   SINCRONIZACIÓN CON GOOGLE SHEETS
+   ========================================================= */
+function syncData(silent) {
+  if (typeof silent === 'undefined') { silent = false; }
 
-      if (navigator.onLine) {
-        dot.className = "w-3 h-3 rounded-full bg-green-400";
-        text.innerText = "En Línea";
-      } else {
-        dot.className = "w-3 h-3 rounded-full bg-yellow-400 animate-pulse";
-        text.innerText = "Modo Offline (Guardando Local)";
-      }
-    }
+  var scriptUrl = lsGet('scriptUrl');
+  if (!scriptUrl) {
+    if (!silent) { alert('No se ha configurado la URL de Google Apps Script.'); }
+    return;
+  }
 
-    function updateLocalCounts() {
-      const votes = JSON.parse(localStorage.getItem('votos_registrados') || '[]');
-      const pending = votes.filter(v => !v.synced).length;
-      
-      document.getElementById('localCountDisplay').innerText = votes.length;
-      document.getElementById('adminTotalLocal').innerText = votes.length;
-      document.getElementById('adminPending').innerText = pending;
-    }
+  var votes = JSON.parse(lsGet('votos_registrados') || '[]');
+  var pending = [];
+  for (var i = 0; i < votes.length; i++) {
+    if (!votes[i].synced) { pending.push(votes[i]); }
+  }
 
-    async function syncData(silent = false) {
-      const scriptUrl = localStorage.getItem('scriptUrl');
-      if (!scriptUrl) {
-        if (!silent) alert('No se ha configurado la URL de Google Apps Script.');
-        return;
-      }
+  if (pending.length === 0) {
+    if (!silent) { alert('No hay votos pendientes por enviar.'); }
+    return;
+  }
 
-      const votes = JSON.parse(localStorage.getItem('votos_registrados') || '[]');
-      const pendingVotes = votes.filter(v => !v.synced);
+  /* IMPORTANTE: en modo "no-cors" solo se permiten cabeceras simples.
+     Por eso se usa text/plain en lugar de application/json. */
+  fetch(scriptUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(pending)
+  })
+  .then(function () {
+    for (var j = 0; j < votes.length; j++) { votes[j].synced = true; }
+    lsSet('votos_registrados', JSON.stringify(votes));
+    updateLocalCounts();
+    if (!silent) { alert('¡Sincronización completada con éxito!'); }
+  })
+  .catch(function (err) {
+    if (window.console) { console.error('Error sincronizando:', err); }
+    if (!silent) { alert('Error al intentar conectar con Google Sheets.'); }
+  });
+}
 
-      if (pendingVotes.length === 0) {
-        if (!silent) alert('No hay votos pendientes por enviar.');
-        return;
-      }
+/* =========================================================
+   PANEL DE ADMINISTRACIÓN
+   ========================================================= */
+function openAdminModal() {
+  document.getElementById('adminModal').classList.add('show');
+  document.getElementById('adminAuthSection').classList.remove('hidden');
+  document.getElementById('adminControlsSection').classList.add('hidden');
+  document.getElementById('adminPinInput').value = '';
+}
 
-      try {
-        await fetch(scriptUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(pendingVotes)
-        });
+function closeAdminModal() {
+  document.getElementById('adminModal').classList.remove('show');
+}
 
-        votes.forEach(v => v.synced = true);
-        localStorage.setItem('votos_registrados', JSON.stringify(votes));
-        updateLocalCounts();
+function verifyAdminPin() {
+  var pin = document.getElementById('adminPinInput').value;
+  if (pin === DEFAULT_PIN) {
+    document.getElementById('adminAuthSection').classList.add('hidden');
+    document.getElementById('adminControlsSection').classList.remove('hidden');
+    updateLocalCounts();
+  } else {
+    alert('PIN incorrecto.');
+  }
+}
 
-        if (!silent) alert('¡Sincronización completada con éxito!');
-      } catch (err) {
-        console.error("Error sincronizando:", err);
-        if (!silent) alert('Error al intentar conectar con Google Sheets.');
-      }
-    }
+function saveAdminSettings() {
+  var newTabletId = document.getElementById('tabletIdInput').value;
+  var newScriptUrl = document.getElementById('scriptUrlInput').value;
 
-    function openAdminModal() {
-      document.getElementById('adminModal').classList.remove('hidden');
-      document.getElementById('adminAuthSection').classList.remove('hidden');
-      document.getElementById('adminControlsSection').classList.add('hidden');
-      document.getElementById('adminPinInput').value = '';
-    }
+  lsSet('tabletId', newTabletId);
+  lsSet('scriptUrl', newScriptUrl);
 
-    function closeAdminModal() {
-      document.getElementById('adminModal').classList.add('hidden');
-    }
+  document.getElementById('tabletIdDisplay').innerHTML = newTabletId;
+  alert('Configuración guardada correctamente.');
+  closeAdminModal();
+}
 
-    function verifyAdminPin() {
-      const pin = document.getElementById('adminPinInput').value;
-      if (pin === DEFAULT_PIN) {
-        document.getElementById('adminAuthSection').classList.add('hidden');
-        document.getElementById('adminControlsSection').classList.remove('hidden');
-        updateLocalCounts();
-      } else {
-        alert('PIN incorrecto.');
-      }
-    }
+/* =========================================================
+   RESPALDO Y LIMPIEZA
+   ========================================================= */
+function exportVotesJSON() {
+  var votes = lsGet('votos_registrados') || '[]';
+  var blob = new Blob([votes], { type: 'application/json' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'votos_' + (lsGet('tabletId') || 'MESA-01') + '_' + Date.now() + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+}
 
-    function saveAdminSettings() {
-      const newTabletId = document.getElementById('tabletIdInput').value;
-      const newScriptUrl = document.getElementById('scriptUrlInput').value;
-
-      localStorage.setItem('tabletId', newTabletId);
-      localStorage.setItem('scriptUrl', newScriptUrl);
-
-      document.getElementById('tabletIdDisplay').innerText = newTabletId;
-      alert('Configuración guardada correctamente.');
-      closeAdminModal();
-    }
-
-    function exportVotesJSON() {
-      const votes = localStorage.getItem('votos_registrados') || '[]';
-      const blob = new Blob([votes], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `votos_${localStorage.getItem('tabletId')}_${Date.now()}.json`;
-      a.click();
-    }
-
-    function clearLocalVotes() {
-      if (confirm('¿ESTÁS SEGURO? Esto borrará permanentemente los votos guardados en esta tablet.')) {
-        localStorage.removeItem('votos_registrados');
-        updateLocalCounts();
-        alert('Memoria local limpiada.');
-      }
-    }
-  </script>
+function clearLocalVotes() {
+  if (confirm('¿ESTÁS SEGURO? Esto borrará permanentemente los votos guardados en esta tablet.')) {
+    lsRemove('votos_registrados');
+    updateLocalCounts();
+    alert('Memoria local limpiada.');
+  }
+}
+</script>
 </body>
 </html>
